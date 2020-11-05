@@ -12,10 +12,12 @@ pipeline {
     }
     stage ('Build image') {
       steps {
-        img = docker.build("${DOCKER_CREDS_USR}/jupyter-quantum")
+        script {
+          img = docker.build("${DOCKER_CREDS_USR}/jupyter-quantum")
+        }
+        
       }
     }
-
     stage ('Test image') {
       steps {
         img.inside {
@@ -23,14 +25,14 @@ pipeline {
         }
       }
     }
-
     stage ('Push image') {
       steps {
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-          img.push("latest")
+        script {
+          docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+            img.push("latest")
+          }
         }
       }
     }
-      
   }
 }
