@@ -1,4 +1,3 @@
-def img
 pipeline {
   agent any
   environment {
@@ -12,26 +11,13 @@ pipeline {
     }
     stage ('Build image') {
       steps {
-        script {
-          img = docker.build("${DOCKER_CREDS_USR}/jupyter-quantum")
-        }
-        
+        sh "docker build -t ${DOCKER_CREDS_USR}/jupyter-quantum ."
       }
     }
-    stage ('Test image') {
-      steps {
-        img.inside {
-          sh 'echo "If this runs, tests pass"'
-        }
-      }
-    }
+
     stage ('Push image') {
       steps {
-        script {
-          docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-            img.push("latest")
-          }
-        }
+        sh "docker push ${DOCKER_CREDS_USR}/jupyter-quantum"
       }
     }
   }
