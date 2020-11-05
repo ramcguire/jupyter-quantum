@@ -1,6 +1,7 @@
+def img
 pipeline {
   agent any
-  def img
+
   environment {
     DOCKER_CREDS = credentials('docker-hub-credentials')
   }
