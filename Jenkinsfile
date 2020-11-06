@@ -17,6 +17,7 @@ pipeline {
 
     stage ('Push image') {
       steps {
+        sh "docker login --username ${DOCKER_CREDS_USR} --password ${DOCKER_CREDS_PSW}"
         sh "docker push ${DOCKER_CREDS_USR}/jupyter-quantum"
       }
     }
